@@ -1,0 +1,38 @@
+[
+  {
+    "name": "example-domain",
+    "start_url": "https://example.com",
+    "goal_url_contains": "iana.org",
+    "description": "Integration smoke-test application only.",
+    "max_actions": 10,
+    "max_steps": 10,
+    "enabled": true
+  },
+  {
+    "name": "opencart",
+    "start_url": "http://localhost:8080",
+    "goal_url_contains": "checkout",
+    "description": "OpenCart evaluation instance.",
+    "max_actions": 30,
+    "max_steps": 50,
+    "enabled": false
+  },
+  {
+    "name": "broadleaf",
+    "start_url": "http://localhost:8081",
+    "goal_url_contains": "checkout",
+    "description": "Broadleaf Commerce evaluation instance.",
+    "max_actions": 30,
+    "max_steps": 50,
+    "enabled": false
+  },
+  {
+    "name": "angular",
+    "start_url": "http://localhost:4200",
+    "goal_url_contains": "success",
+    "description": "Angular evaluation application.",
+    "max_actions": 30,
+    "max_steps": 50,
+    "enabled": false
+  }
+]
