@@ -1,0 +1,7 @@
+fault_type,old_locator_failed,healed,selected_score,selected_element_id,replacement_strategy,replacement_value,replacement_executed,threshold
+id_change,True,True,0.9628480072571062,signin-button,id,signin-button,True,0.7
+text_change,True,True,0.9525519800056955,signin-button,id,signin-button,True,0.7
+class_change,True,True,0.9562201002803621,signin-button,id,signin-button,True,0.7
+structure_change,True,True,0.9355690163213071,signin-button,id,signin-button,True,0.7
+position_change,True,True,0.9628480072571062,signin-button,id,signin-button,True,0.7
+combined_fault,True,True,0.867023633861662,account-access-button,id,account-access-button,True,0.7
