@@ -1,0 +1,99 @@
+{
+  "exploration": {
+    "random": {
+      "episodes": 3,
+      "successful_episodes": 1,
+      "success_rate": 0.3333333333333333,
+      "average_reward": -1.8333333333333333,
+      "average_steps": 8,
+      "average_visited_states": 1.6666666666666667
+    },
+    "ppo": {
+      "episodes": 3,
+      "successful_episodes": 3,
+      "success_rate": 1.0,
+      "average_reward": 17.5,
+      "average_steps": 1,
+      "average_visited_states": 2
+    }
+  },
+  "self_healing": {
+    "injected_faults": 6,
+    "healed_faults": 6,
+    "healing_success_rate": 1.0,
+    "executed_replacements": 6,
+    "average_selected_score": 0.9395101241638731,
+    "faults": [
+      {
+        "fault_type": "id_change",
+        "old_locator_failed": "True",
+        "healed": "True",
+        "selected_score": "0.9628480072571062",
+        "selected_element_id": "signin-button",
+        "replacement_strategy": "id",
+        "replacement_value": "signin-button",
+        "replacement_executed": "True",
+        "threshold": "0.7"
+      },
+      {
+        "fault_type": "text_change",
+        "old_locator_failed": "True",
+        "healed": "True",
+        "selected_score": "0.9525519800056955",
+        "selected_element_id": "signin-button",
+        "replacement_strategy": "id",
+        "replacement_value": "signin-button",
+        "replacement_executed": "True",
+        "threshold": "0.7"
+      },
+      {
+        "fault_type": "class_change",
+        "old_locator_failed": "True",
+        "healed": "True",
+        "selected_score": "0.9562201002803621",
+        "selected_element_id": "signin-button",
+        "replacement_strategy": "id",
+        "replacement_value": "signin-button",
+        "replacement_executed": "True",
+        "threshold": "0.7"
+      },
+      {
+        "fault_type": "structure_change",
+        "old_locator_failed": "True",
+        "healed": "True",
+        "selected_score": "0.9355690163213071",
+        "selected_element_id": "signin-button",
+        "replacement_strategy": "id",
+        "replacement_value": "signin-button",
+        "replacement_executed": "True",
+        "threshold": "0.7"
+      },
+      {
+        "fault_type": "position_change",
+        "old_locator_failed": "True",
+        "healed": "True",
+        "selected_score": "0.9628480072571062",
+        "selected_element_id": "signin-button",
+        "replacement_strategy": "id",
+        "replacement_value": "signin-button",
+        "replacement_executed": "True",
+        "threshold": "0.7"
+      },
+      {
+        "fault_type": "combined_fault",
+        "old_locator_failed": "True",
+        "healed": "True",
+        "selected_score": "0.867023633861662",
+        "selected_element_id": "account-access-button",
+        "replacement_strategy": "id",
+        "replacement_value": "account-access-button",
+        "replacement_executed": "True",
+        "threshold": "0.7"
+      }
+    ]
+  },
+  "scope": {
+    "status": "integration_validation",
+    "paper_ready": false
+  }
+}
