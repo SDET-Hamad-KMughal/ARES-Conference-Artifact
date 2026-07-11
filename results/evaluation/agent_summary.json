@@ -1,0 +1,28 @@
+[
+  {
+    "agent": "ppo",
+    "episodes": 3,
+    "successful_episodes": 3,
+    "success_rate": 1.0,
+    "average_reward": 17.5,
+    "reward_std": 0.0,
+    "average_steps": 1,
+    "steps_std": 0.0,
+    "average_visited_states": 2,
+    "average_successful_actions": 1,
+    "average_failed_actions": 0
+  },
+  {
+    "agent": "random",
+    "episodes": 3,
+    "successful_episodes": 1,
+    "success_rate": 0.3333333333333333,
+    "average_reward": -1.8333333333333333,
+    "reward_std": 10.92652226872251,
+    "average_steps": 8,
+    "steps_std": 2.8284271247461903,
+    "average_visited_states": 1.6666666666666667,
+    "average_successful_actions": 8,
+    "average_failed_actions": 0
+  }
+]

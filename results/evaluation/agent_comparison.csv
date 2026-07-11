@@ -1,0 +1,7 @@
+agent,episode,seed,total_reward,steps,goal_reached,final_url,visited_states,successful_actions,failed_actions
+random,1,42,-5.5,10,False,"data:,",2,10,0
+ppo,1,42,17.5,1,True,https://www.iana.org/help/example-domains,2,1,0
+random,2,43,13.0,4,True,https://www.iana.org/help/example-domains,2,4,0
+ppo,2,43,17.5,1,True,https://www.iana.org/help/example-domains,2,1,0
+random,3,44,-13.0,10,False,https://example.com/,1,10,0
+ppo,3,44,17.5,1,True,https://www.iana.org/help/example-domains,2,1,0
