@@ -1,0 +1,48 @@
+name: ares-opencart
+
+services:
+  database:
+    image: mysql:8.0
+    container_name: ares-opencart-db
+    restart: unless-stopped
+
+    command: --default-authentication-plugin=mysql_native_password
+
+    environment:
+      MYSQL_DATABASE: opencart
+      MYSQL_USER: opencart
+      MYSQL_PASSWORD: opencart_password
+      MYSQL_ROOT_PASSWORD: ares_root_password
+
+    volumes:
+      - opencart_database:/var/lib/mysql
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h localhost -uroot -pares_root_password"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  opencart:
+    image: aamservices/opencart:3.0.3.8
+    container_name: ares-opencart-web
+    restart: unless-stopped
+
+    depends_on:
+      database:
+        condition: service_healthy
+
+    ports:
+      - "8080:80"
+
+    volumes:
+      - opencart_files:/var/www
+
+volumes:
+  opencart_database:
+  opencart_files:
