@@ -16,35 +16,9 @@ The current conference artifact demonstrates the complete autonomous execution p
 
 ---
 
-## Framework Pipeline
+## Framework Architecture
 
-```text
-Browser Manager
-        │
-        ▼
-DOM Analyzer
-        │
-        ▼
-Action Executor
-        │
-        ▼
-State Graph Builder
-        │
-        ▼
-Logic Engine
-        │
-        ▼
-Oracle Engine
-        │
-        ▼
-Experiment Runner
-        │
-        ▼
-Evaluation Pipeline
-        │
-        ▼
-Conference Report Generator
-```
+![ARES Architecture](docs/architecture.png)
 
 ---
 
