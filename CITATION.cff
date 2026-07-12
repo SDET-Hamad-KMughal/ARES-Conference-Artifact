@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+title: "ARES Conference Artifact"
+message: "If you use this artifact, please cite the accompanying ARES paper."
+type: software
+authors:
+  - family-names: "Mughal"
+    given-names: "Hammad Sajjad"
+version: "1.0.0"
+date-released: "2026-07-12"
+license: MIT
+repository-code: "https://github.com/SDET-Hamad-KMughal/ARES-Conference-Artifact"
+keywords:
+  - autonomous web testing
+  - software testing
+  - Selenium
+  - state graph
+  - test generation
+  - self-healing
