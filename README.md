@@ -8,34 +8,13 @@ This repository accompanies the ARES conference submission and contains the comp
 
 ---
 
-# Framework Pipeline
+## Framework Pipeline
 
-```
-Target Web Application
-          │
-          ▼
-Browser Manager
-          │
-          ▼
-DOM Analyzer
-          │
-          ▼
-Logic Engine
-(Action Inference)
-          │
-          ▼
-Experiment Runner
-          │
-          ▼
-Oracle Engine
-          │
-          ▼
-Evaluation Pipeline
-          │
-          ▼
-JSON Reports + Text Reports
-```
+<p align="center">
+  <img src="docs/architecture.png" alt="ARES Framework Architecture" width="650">
+</p>
 
+**Figure.** Overall architecture of the implemented ARES conference artifact. The framework automatically analyzes the target application, infers executable actions, executes workflows, validates outcomes through oracle evaluation, constructs state transitions, computes execution metrics, and generates reproducible evaluation artifacts.
 ---
 
 # Repository Structure
