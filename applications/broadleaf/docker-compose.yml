@@ -1,0 +1,40 @@
+name: ares-broadleaf
+
+services:
+  solr:
+    image: solr:8.11.4
+    container_name: ares-broadleaf-solr
+    restart: unless-stopped
+
+    ports:
+      - "8983:8983"
+
+    volumes:
+      - broadleaf_solr_data:/var/solr
+      - ./solr-config/catalog:/opt/solr/server/solr/configsets/broadleaf:ro
+
+  broadleaf:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: ares-broadleaf-site
+    restart: "no"
+
+    depends_on:
+      - solr
+
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+
+    environment:
+      MAVEN_OPTS: "-Xms512m -Xmx1536m"
+      JAVA_TOOL_OPTIONS: "-Dfilter.sessionFixationProtection.legacy.enabled=false"
+
+      SOLR_URL_PRIMARY: "http://solr:8983/solr/catalog"
+      SOLR_URL_REINDEX: "http://solr:8983/solr/catalog_reindex"
+      SOLR_URL_ADMIN: "http://solr:8983/solr"
+
+volumes:
+  broadleaf_solr_data:
