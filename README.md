@@ -1,105 +1,131 @@
-# ARES Conference Artifact
+# ARES: An Autonomous End-to-End Web Test Generation Framework with Proactive Self-Healing
 
-**ARES** is a research-grade autonomous web testing framework accompanying the conference paper:
+## Overview
 
-> **ARES: An Autonomous End-to-End Web Test Generation Framework with Proactive Self-Healing**
+ARES is a research prototype for autonomous web application testing. The framework automatically analyzes a web application's interface, infers executable user actions, constructs workflow state transitions, executes multi-step navigation, validates outcomes using lightweight oracles, and generates reproducible evaluation artifacts.
 
-This repository contains the complete experimental artifact used to demonstrate the framework pipeline described in the paper.
-
----
-
-## Artifact Overview
-
-ARES automatically explores modern web applications by combining browser automation, DOM analysis, state graph construction, action inference, oracle evaluation, and experiment reporting.
-
-The current conference artifact demonstrates the complete autonomous execution pipeline on multiple web application subjects under test (SUTs).
+This repository accompanies the ARES conference submission and contains the complete implementation used for the experimental evaluation.
 
 ---
 
-## Framework Architecture
+# Framework Pipeline
 
-![ARES Architecture](docs/architecture.png)
-
----
-
-## Repository Structure
-
-```text
-ARES-Conference-Artifact/
-
-applications/
-    angular/
-    opencart/
-    broadleaf/
-
-runner/
-    core/
-    config/
-    utils/
-
-results/
-evaluation/
-docs/
+```
+Target Web Application
+          │
+          ▼
+Browser Manager
+          │
+          ▼
+DOM Analyzer
+          │
+          ▼
+Logic Engine
+(Action Inference)
+          │
+          ▼
+Experiment Runner
+          │
+          ▼
+Oracle Engine
+          │
+          ▼
+Evaluation Pipeline
+          │
+          ▼
+JSON Reports + Text Reports
 ```
 
 ---
 
-## Current Implementation Status
+# Repository Structure
 
-| Module | Status |
-|---------|--------|
-| Browser Manager | ✅ |
-| DOM Analyzer | ✅ |
-| Action Executor | ✅ |
-| State Graph Builder | ✅ |
-| Logic Engine | ✅ |
-| Oracle Engine | ✅ |
-| Experiment Runner | ✅ |
-| Evaluation Pipeline | ✅ |
-| Report Generator | ✅ |
+```
+ARES-Conference-Artifact/
+
+applications/
+    angular/
+    broadleaf/
+    opencart/
+
+evaluation/
+    run_opencart_conference.py
+    run_broadleaf_conference.py
+    run_angular_conference.py
+
+runner/
+    core/
+        browser_manager.py
+        dom_analyzer.py
+        logic_engine.py
+        experiment_runner.py
+        oracle_engine.py
+
+results/
+
+Figures/
+
+paper/
+```
 
 ---
 
-## Supported Subject Applications
+# Features
 
-| Application | Status |
-|-------------|--------|
-| Angular Demo Store | ✅ |
-| OpenCart 3.0.3.8 | ✅ |
-| Broadleaf Commerce | ✅ |
+- Automatic DOM analysis
+- Action inference
+- Workflow execution
+- State transition tracking
+- Lightweight oracle validation
+- Multi-SUT evaluation
+- Automatic report generation
+- Conference artifact reproduction
 
+---
+
+# Evaluated Systems
+
+The framework was evaluated on three representative web applications.
+
+| System | Technology |
+|---------|------------|
+| OpenCart 3.0.3.8 | PHP |
+| Broadleaf Commerce 6.2 | Spring Boot |
+| Angular Demo Store | Angular |
+
+---
+
+# Experimental Results
+
+| System | Actions Inferred | Actions Executed | Successful | States | Transitions | Oracle Pass Rate |
+|---------|----------------:|----------------:|-----------:|-------:|------------:|-----------------:|
+| OpenCart | 239 | 4 | 4 | 5 | 4 | 100% |
+| Broadleaf Commerce | 188 | 4 | 4 | 4 | 4 | 100% |
+| Angular Demo | 20 | 4 | 4 | 4 | 4 | 100% |
 
 ---
 
 # Requirements
 
-The artifact has been tested with the following environment:
-
-| Component | Version |
-|-----------|---------|
-| Python | 3.12+ |
-| Google Chrome | Latest Stable |
-| ChromeDriver | Selenium Manager (automatic) |
-| Node.js | 20+ |
-| npm | 10+ |
-| Docker Desktop | Latest |
-| Git | Latest |
+- Python 3.12+
+- Google Chrome
+- ChromeDriver
+- Docker Desktop
+- Node.js (Angular)
+- Java 17 (Broadleaf)
 
 ---
 
 # Installation
 
-Clone the repository:
+Clone the repository.
 
 ```bash
-git clone https://github.com/SDET-Hamad-KMughal/ARES-Conference-Artifact.git
-
+git clone <repository-url>
 cd ARES-Conference-Artifact
 ```
 
----
-
-## Install Python Dependencies
+Install Python packages.
 
 ```bash
 pip install -r requirements.txt
@@ -107,240 +133,109 @@ pip install -r requirements.txt
 
 ---
 
-## Install Angular Dependencies
+# Running OpenCart
+
+Start the containers.
+
+```bash
+docker start ares-opencart-db
+docker start ares-opencart-web
+```
+
+Run evaluation.
+
+```bash
+PYTHONPATH=. python evaluation/run_opencart_conference.py
+```
+
+---
+
+# Running Broadleaf
+
+Start Solr.
+
+```bash
+docker start ares-broadleaf-solr
+```
+
+Start Broadleaf.
+
+```bash
+docker start ares-broadleaf-site
+```
+
+Run evaluation.
+
+```bash
+PYTHONPATH=. python evaluation/run_broadleaf_conference.py
+```
+
+---
+
+# Running Angular
+
+Start the Angular application.
 
 ```bash
 cd applications/angular/ares-angular-sut
-
 npm install
-```
-
-Start Angular:
-
-```bash
 npm start
 ```
 
-The application will be available at:
-
-```
-http://localhost:4200
-```
-
----
-
-## OpenCart
-
-The Dockerized OpenCart application is located under:
-
-```
-applications/opencart/
-```
-
-Start using Docker Compose.
-
----
-
-## Broadleaf Commerce
-
-The Dockerized Broadleaf Commerce application is located under:
-
-```
-applications/broadleaf/
-```
-
-Start using Docker Compose.
-
-Default URL:
-
-```
-https://localhost:8443
-```
-
----
-
-# Quick Start
-
-Run each module independently.
-
-## Browser Manager
+Run evaluation.
 
 ```bash
-python -m runner.test_browser_manager
+PYTHONPATH=. python evaluation/run_angular_conference.py
 ```
 
 ---
 
-## DOM Analyzer
+# Generated Artifacts
 
-```bash
-python -m runner.test_dom_analyzer
+Each evaluation automatically generates:
+
 ```
+raw_result.json
+evaluation_summary.json
+conference_report.txt
+```
+
+These files contain:
+
+- inferred actions
+- executed workflow
+- oracle outcomes
+- state transitions
+- execution statistics
 
 ---
 
-## State Graph Builder
+# Conference Artifact
 
-```bash
-python -m runner.test_state_graph
-```
+This repository contains the implementation accompanying the ARES conference submission.
 
----
+The artifact demonstrates:
 
-## Logic Engine
+- automatic action inference
+- workflow execution
+- oracle validation
+- state graph construction
+- reproducible evaluation
 
-```bash
-python -m runner.test_logic_engine
-```
-
----
-
-## Oracle Engine
-
-```bash
-python -m runner.test_oracle_engine
-```
-
----
-
-## Experiment Runner
-
-```bash
-python -m runner.test_experiment_runner
-```
-
----
-
-## Evaluation Pipeline
-
-```bash
-python -m runner.test_evaluation_pipeline
-```
-
----
-
-## Report Generator
-
-```bash
-python -m runner.test_report_generator
-```
-
----
-
-# Expected Outputs
-
-Successful execution produces the following artifacts:
-
-```
-runner/results/
-
-angular/
-    browser/
-    dom_analysis.json
-    state_graph.json
-    experiment/
-        angular_route_exploration_result.json
-    evaluation/
-        angular_route_exploration_evaluation.json
-    report/
-        evaluation_report.txt
-```
-
-These outputs document every stage of the autonomous testing pipeline.
-
----
-
-# Reproducing the Conference Evaluation
-
-1. Start the target application (Angular, OpenCart, or Broadleaf).
-2. Run the Experiment Runner.
-
-```bash
-python -m runner.test_experiment_runner
-```
-
-3. Compute evaluation metrics.
-
-```bash
-python -m runner.test_evaluation_pipeline
-```
-
-4. Generate the artifact report.
-
-```bash
-python -m runner.test_report_generator
-```
-
-The generated report summarizes execution statistics, state exploration, oracle results, and overall experiment quality.
-
----
-
-# Experimental Workflow
-
-```
-Start SUT
-     │
-     ▼
-Browser Manager
-     │
-     ▼
-DOM Analyzer
-     │
-     ▼
-Action Executor
-     │
-     ▼
-State Graph Builder
-     │
-     ▼
-Logic Engine
-     │
-     ▼
-Oracle Engine
-     │
-     ▼
-Experiment Runner
-     │
-     ▼
-Evaluation Pipeline
-     │
-     ▼
-Conference Report
-```
-
----
-
-# Research Purpose
-
-This repository accompanies the ARES conference paper and demonstrates a lightweight, research-grade implementation of the proposed autonomous web testing framework.
-
-The artifact focuses on:
-
-- Autonomous browser interaction
-- DOM analysis
-- State graph construction
-- Action inference
-- Oracle-based validation
-- End-to-end experiment execution
-- Automated evaluation
-- Reproducible reporting
-
----
-
-# License
-
-This repository is released for research and academic purposes.
+across multiple web applications.
 
 ---
 
 # Citation
 
-If you use this artifact in your research, please cite the accompanying ARES conference paper.
+If you use this artifact, please cite the accompanying ARES paper.
 
-```bibtex
-@inproceedings{ARES2026,
-  title={ARES: An Autonomous End-to-End Web Test Generation Framework with Proactive Self-Healing},
-  author={Mughal, Hamad Sajad},
-  year={2026}
-}
 ```
+BibTeX will be added after publication.
+```
+
+---
+
+# License
+
+This repository is released for academic and research purposes.
