@@ -5,15 +5,14 @@ result. It combines URL validation, expected-text detection, and visible error
 detection into one structured outcome.
 """
 
+import re
 from dataclasses import asdict, dataclass
 from typing import Any, Dict, Iterable, List, Optional
 
 
 @dataclass
 class OracleResult:
-    """
-    Represents the outcome of one oracle evaluation.
-    """
+    """Represent the outcome of one oracle evaluation."""
 
     passed: bool
     score: float
@@ -28,9 +27,7 @@ class OracleResult:
 
 
 class OracleEngine:
-    """
-    Evaluate browser outcomes using lightweight deterministic oracles.
-    """
+    """Evaluate browser outcomes using lightweight deterministic oracles."""
 
     DEFAULT_ERROR_INDICATORS = (
         "404",
@@ -43,6 +40,31 @@ class OracleEngine:
         "forbidden",
         "not found",
         "internal server error",
+    )
+
+    ERROR_PHRASES = (
+        "internal server error",
+        "page not found",
+        "resource not found",
+        "access denied",
+        "request failed",
+        "operation failed",
+        "unexpected error",
+        "application error",
+        "server error",
+        "uncaught exception",
+        "stack trace",
+        "unauthorized",
+        "forbidden",
+    )
+
+    STATUS_CODE_PATTERNS = (
+        r"\b404\s+(?:error|not found)\b",
+        r"\b500\s+(?:error|internal server error)\b",
+        r"\bhttp\s+404\b",
+        r"\bhttp\s+500\b",
+        r"\berror\s+404\b",
+        r"\berror\s+500\b",
     )
 
     def __init__(
@@ -63,8 +85,9 @@ class OracleEngine:
         )
 
         self.error_indicators = tuple(
-            indicator.lower()
+            indicator.strip().lower()
             for indicator in indicators
+            if indicator.strip()
         )
 
     def evaluate(
@@ -95,7 +118,9 @@ class OracleEngine:
             """
         ) or ""
 
-        normalized_body_text = body_text.lower()
+        normalized_body_text = self._normalize_text(
+            body_text
+        )
 
         url_match = self._evaluate_url(
             actual_url=actual_url,
@@ -149,13 +174,21 @@ class OracleEngine:
         return asdict(result)
 
     @staticmethod
+    def _normalize_text(
+        text: str,
+    ) -> str:
+        """Normalize visible page text for deterministic matching."""
+
+        return " ".join(
+            text.lower().split()
+        )
+
+    @staticmethod
     def _evaluate_url(
         actual_url: str,
         expected_url: Optional[str],
     ) -> Optional[bool]:
-        """
-        Evaluate whether the actual URL matches the expectation.
-        """
+        """Evaluate whether the actual URL matches the expectation."""
 
         if expected_url is None:
             return None
@@ -172,9 +205,7 @@ class OracleEngine:
         body_text: str,
         expected_text: Optional[str],
     ) -> Optional[bool]:
-        """
-        Evaluate whether expected text is visible on the page.
-        """
+        """Evaluate whether expected text is visible on the page."""
 
         if expected_text is None:
             return None
@@ -191,14 +222,75 @@ class OracleEngine:
         normalized_body_text: str,
     ) -> List[str]:
         """
-        Detect configured error indicators in page text.
+        Detect genuine visible error messages.
+
+        Standalone numbers such as 404 or 500 are not treated as errors because
+        they may appear in prices, identifiers, product descriptions, or phone
+        numbers. Numeric status codes are accepted only when they appear in a
+        recognizable error phrase.
         """
 
-        return [
+        detected: List[str] = []
+
+        for phrase in self.ERROR_PHRASES:
+            if phrase in normalized_body_text:
+                detected.append(phrase)
+
+        for pattern in self.STATUS_CODE_PATTERNS:
+            match = re.search(
+                pattern,
+                normalized_body_text,
+                flags=re.IGNORECASE,
+            )
+
+            if match:
+                detected.append(
+                    match.group(0).lower()
+                )
+
+        custom_indicators = [
             indicator
             for indicator in self.error_indicators
-            if indicator in normalized_body_text
+            if indicator not in {"404", "500"}
+            and indicator not in self.ERROR_PHRASES
         ]
+
+        for indicator in custom_indicators:
+            if self._contains_indicator(
+                normalized_body_text,
+                indicator,
+            ):
+                detected.append(indicator)
+
+        return list(
+            dict.fromkeys(detected)
+        )
+
+    @staticmethod
+    def _contains_indicator(
+        normalized_body_text: str,
+        indicator: str,
+    ) -> bool:
+        """
+        Match an indicator as a phrase or complete word.
+
+        This avoids substring false positives such as detecting "error" inside
+        an unrelated longer word.
+        """
+
+        escaped_indicator = re.escape(indicator)
+
+        pattern = (
+            rf"(?<!\w){escaped_indicator}(?!\w)"
+        )
+
+        return bool(
+            re.search(
+                pattern,
+                normalized_body_text,
+                flags=re.IGNORECASE,
+            )
+        )
 
     @staticmethod
     def _determine_passed(
@@ -206,9 +298,7 @@ class OracleEngine:
         success_text_found: Optional[bool],
         error_detected: bool,
     ) -> bool:
-        """
-        Determine the overall oracle outcome.
-        """
+        """Determine the overall oracle outcome."""
 
         checks: List[bool] = []
 
@@ -229,9 +319,7 @@ class OracleEngine:
         success_text_found: Optional[bool],
         error_detected: bool,
     ) -> float:
-        """
-        Calculate a normalized confidence score.
-        """
+        """Calculate a normalized confidence score."""
 
         scores: List[float] = []
 
@@ -262,9 +350,7 @@ class OracleEngine:
         error_detected: bool,
         detected_errors: List[str],
     ) -> str:
-        """
-        Build a human-readable oracle explanation.
-        """
+        """Build a human-readable oracle explanation."""
 
         reasons: List[str] = []
 
