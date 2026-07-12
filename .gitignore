@@ -1,4 +1,18 @@
+# Broadleaf source checkout
+applications/broadleaf/source/
+
+# Generated experiment outputs
+results/
+
+# Future outputs
+outputs/
+
 # Python
+__pycache__/
+*.pyc
+
+# Node
+node_modules/# Python
 __pycache__/
 *.py[cod]
 *.pyo
